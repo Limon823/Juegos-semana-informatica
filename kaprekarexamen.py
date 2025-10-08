@@ -3,7 +3,7 @@ num = int(input("Ingresa un número de 4 dígitos: "))
 if len(set(str(num))) == 1:
     print("Error: no se permiten números con todas las cifras iguales.")
 else:
-    pasos = 0
+    pasos = 0 
 
     while num != 6174:
         cadena = str(num).zfill(4)
