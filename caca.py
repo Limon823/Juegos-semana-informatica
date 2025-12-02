@@ -38,8 +38,16 @@ dark.pack(side = "left")
 botonazo = interfaz.Button(ventana, text="boton", command = otrocambio,font=("Arial",23))
 botonazo.place(x=20,y=150)
 
-imagen = interfaz.PhotoImage(file = "pain.png")
-lblimagen = interfaz.Label(ventana, imagen=imagen)
+
+imagen_tk = interfaz.PhotoImage(file="pain.png")
+
+
+lblimagen = interfaz.Label(ventana, image=imagen_tk)
 lblimagen.place(x=100,y=100)
+
+
+lblimagen.image = imagen_tk 
+
+
 
 ventana.mainloop()
