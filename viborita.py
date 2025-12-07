@@ -1,5 +1,6 @@
 #Juego: Viborita
 #Autor: Bryan Flores
+#Grupo: 1301-Li
 
 from tkinter import Tk, Canvas, Frame, Button, Label, IntVar, ALL
 import random
