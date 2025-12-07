@@ -1,144 +1,162 @@
-import turtle
-import time
+#Juego: Viborita
+#Autor: Bryan Flores
+
+from tkinter import Tk, Canvas, Frame, Button, Label, IntVar, ALL
 import random
 
-# --- Configuración Inicial ---
-retraso = 0.1
-puntos = 0
-alto_puntaje = 0
+x,y = 75, 75
+direccion = ""
+posicion_x = 15
+posicion_y = 15
+posicion_food = (105,105)
+posicion_Vibora = [(75,75)]
+nueva_posicion = [(75, 75)]
 
-# Pantalla
-ventana = turtle.Screen()
+def dibujar_fondo():
+    for i in range(0,460,30):
+        for j in range(0,460,30):
+            Canvas.create_rectangle(i, j, i+30, j+30, fill="gray10")
+
+def coordenadas_vibora():
+    global direccion, posicion_Vibora,x,y ,nueva_posicion
+
+    if direccion == "arriba":
+        y = y-30
+        nueva_posicion[0] = (x,y)
+        if y >=465:
+            y=15
+        elif y <=0:
+            y=465
+    elif direccion == "abajo":
+        y = y+30
+        nueva_posicion[0] = (x,y)
+        if y >=465:
+            y=15
+        elif y <=0:
+            y=15
+    elif direccion == "izquierda":
+        x = x-30
+        nueva_posicion[0] = (x,y)
+        if x >=465:
+            x=15
+        elif x <=0:
+            x=465
+    elif direccion == "derecha":
+        x = x+30
+        nueva_posicion[0] = (x,y)
+        if x >=465:
+            x=15
+        elif x <=0:
+            x=15
+
+    posicion_Vibora = nueva_posicion + posicion_Vibora[:-1]
+
+    for parte, lugar in zip(Canvas.find_withtag("vibora"), posicion_Vibora):
+        Canvas.coords(parte, lugar)
+
+def direccion_vibora(event):
+    global direccion
+    
+    if event == "izquierda":
+        direccion = event
+    elif event == "derecha":
+        direccion = event
+    elif event == "arriba":
+        direccion = event
+    elif event == "abajo":
+        direccion = event
+
+def movimiento_vibora():
+    global posicion_food, posicion_Vibora, nueva_posicion
+    posiciones =[15,45,75,105,135,165,195,225,255,285,315,345,375,405,435,465]
+
+    coordenadas_vibora()
+
+    if posicion_food == posicion_Vibora[0]:
+        n = len(posicion_Vibora)
+
+        cantidad["text"] = "cantidad 🍎: {} ".format(n)
+
+        posicion_food = (random.choice(posiciones), random.choice(posiciones))
+        posicion_Vibora.append(posicion_Vibora[-1])
+
+        if posicion_food not in posicion_Vibora:
+            Canvas.coords(Canvas.find_withtag("food"), posicion_food)
+        
+        Canvas.create_text(*posicion_Vibora[-1],text="■",fill="green2", font=("Arial", 20),tag="vibora")
+    
+    if posicion_Vibora[0] in posicion_Vibora[1:] and len(posicion_Vibora) > 2:
+        cruzar_vibora()
+        return
+
+    for i in posicion_Vibora:
+        if len(posicion_Vibora)==257:
+            maximo_nivel()
+
+    cantidad.after(300, movimiento_vibora)
+
+def cruzar_vibora():
+    Canvas.delete(ALL)
+    Canvas.create_text(Canvas.winfo_width()/2, Canvas.winfo_height()/2, text="Intentalo\n de Nuevo \n\n🍎", fill="red", font=("Arial", 20,"bold"))
+
+def maximo_nivel():
+    Canvas.delete(ALL)
+    Canvas.create_text(Canvas.winfo_width()/2, Canvas.winfo_height()/2, text="🎉\n\n\n 🎉\n\n\n 🎉\n\n\n 🎉", fill="green", font=("Arial", 35,"bold"))
+
+def iniciar_nuevo_juego():
+    global x, y, direccion, posicion_Vibora, nueva_posicion, posicion_food
+    x, y = 75, 75
+    direccion = "" 
+    posicion_Vibora = [(75,75)]
+    nueva_posicion = [(75, 75)]
+    posicion_food = (105, 105)
+    
+    Canvas.delete(ALL)
+    cantidad["text"] = "cantidad 🍎: 0"
+    
+    #se Dibuja todo de nuevo
+    dibujar_fondo()
+    Canvas.create_text(*posicion_food, text="🍎", fill="red", font=("Arial", 18), tag="food")
+    Canvas.create_text(75, 75, text="■", fill="white", font=("Arial", 20), tag="vibora")
+    
+    movimiento_vibora()
+
+def salir():
+    ventana.destroy()
+    ventana.quit()
+
+ventana = Tk()
+ventana.config(bg="black")
 ventana.title("Viborita")
-ventana.bgcolor("black")
-ventana.setup(width=600, height=600)
-ventana.tracer(0)
+ventana.geometry("485x510")
+ventana.resizable(0, 0)
 
-# Cabeza de la serpiente
-cabeza = turtle.Turtle()
-cabeza.speed(0)
-cabeza.shape("square")
-cabeza.color("white")
-cabeza.penup()
-cabeza.goto(0, 0)
-cabeza.direction = "stop"
+frame_1 = Frame(ventana, width= 485, height=25, bg="black")
+frame_1.grid(column=0, row=0)
+frame_2 = Frame(ventana, width= 485, height=490, bg="black")
+frame_2.grid(column=0, row=1)
 
-# Comida
-comida = turtle.Turtle()
-comida.speed(0)
-comida.shape("circle")
-comida.color("red")
-comida.penup()
-comida.goto(0, 100)
+ventana.bind("<w>", lambda event: direccion_vibora("arriba"))
+ventana.bind("<s>", lambda event: direccion_vibora("abajo"))
+ventana.bind("<a>", lambda event: direccion_vibora("izquierda"))
+ventana.bind("<d>", lambda event: direccion_vibora("derecha"))
 
-# Cuerpo de la serpiente (lista vacía)
-cuerpo = []
+Canvas = Canvas(frame_2, width=479, height=479, bg="black")
+Canvas.pack()
 
-# --- TEXTO (Marcador y Game Over) ---
-texto = turtle.Turtle()
-texto.speed(0)
-texto.color("white")
-texto.penup()
-texto.hideturtle()
-texto.goto(0, 260)
-texto.write("Puntos: 0", align="center", font=("Courier", 24, "normal"))
+dibujar_fondo() 
 
-# --- Funciones ---
-def arriba():
-    if cabeza.direction != "down":
-        cabeza.direction = "up"
-def abajo():
-    if cabeza.direction != "up":
-        cabeza.direction = "down"
-def izquierda():
-    if cabeza.direction != "right":
-        cabeza.direction = "left"
-def derecha():
-    if cabeza.direction != "left":
-        cabeza.direction = "right"
+# Creamos la comida inicial
+Canvas.create_text(105,105, text="🍎", fill="red", font=("Arial", 18), tag = "food") # Ojo: puse 105,105
 
-def mover():
-    if cabeza.direction == "up":
-        cabeza.sety(cabeza.ycor() + 20)
-    if cabeza.direction == "down":
-        cabeza.sety(cabeza.ycor() - 20)
-    if cabeza.direction == "left":
-        cabeza.setx(cabeza.xcor() - 20)
-    if cabeza.direction == "right":
-        cabeza.setx(cabeza.xcor() + 20)
+Button1 = Button(frame_1, text="Salir", command=salir, bg="red", fg="white")
+Button1.grid(column=0, row=0, padx=20)
 
-def game_over():
-    global puntos
-    # Mostrar mensaje
-    texto.goto(0, 0)
-    texto.write("GAME OVER", align="center", font=("Courier", 40, "bold"))
-    ventana.update()
-    time.sleep(2) # Esperar 2 segundos
-    
-    # Reiniciar juego
-    cabeza.goto(0, 0)
-    cabeza.direction = "stop"
-    
-    # Borrar cuerpo
-    for segmento in cuerpo:
-        segmento.goto(1000, 1000)
-    cuerpo.clear()
-    
-    # Reiniciar puntos
-    puntos = 0
-    texto.clear()
-    texto.goto(0, 260)
-    texto.write("Puntos: {}".format(puntos), align="center", font=("Courier", 24, "normal"))
+# CAMBIO IMPORTANTE AQUÍ: command=iniciar_nuevo_juego
+Button2 = Button(frame_1, text="Iniciar", command=iniciar_nuevo_juego, bg="green", fg="white")
+Button2.grid(column=1, row=0, padx=20)
 
-# --- Controles ---
-ventana.listen()
-ventana.onkeypress(arriba, "w")
-ventana.onkeypress(abajo, "s")
-ventana.onkeypress(izquierda, "a")
-ventana.onkeypress(derecha, "d")
+cantidad = Label(frame_1, text="cantidad 🍎: 0", bg="black", fg="white", font=("Arial", 20,"bold"))
+cantidad.grid(column=2, row=0, padx=20)
 
-# --- Bucle del Juego ---
-while True:
-    ventana.update()
-
-    # 1. Choque con bordes
-    if cabeza.xcor() > 290 or cabeza.xcor() < -290 or cabeza.ycor() > 290 or cabeza.ycor() < -290:
-        game_over()
-
-    # 2. Choque con comida
-    if cabeza.distance(comida) < 20:
-        x = random.randint(-280, 280)
-        y = random.randint(-280, 280)
-        comida.goto(x, y)
-
-        nuevo_segmento = turtle.Turtle()
-        nuevo_segmento.speed(0)
-        nuevo_segmento.shape("square")
-        nuevo_segmento.color("grey")
-        nuevo_segmento.penup()
-        cuerpo.append(nuevo_segmento)
-
-        # Actualizar Puntos
-        puntos += 10
-        texto.clear()
-        texto.write("Puntos: {}".format(puntos), align="center", font=("Courier", 24, "normal"))
-
-    # Mover el cuerpo
-    for index in range(len(cuerpo) - 1, 0, -1):
-        x = cuerpo[index - 1].xcor()
-        y = cuerpo[index - 1].ycor()
-        cuerpo[index].goto(x, y)
-
-    if len(cuerpo) > 0:
-        x = cabeza.xcor()
-        y = cabeza.ycor()
-        cuerpo[0].goto(x, y)
-
-    mover()
-
-    # 3. Choque con el propio cuerpo
-    for segmento in cuerpo:
-        if segmento.distance(cabeza) < 20:
-            game_over()
-
-    time.sleep(retraso)
+ventana.mainloop()
