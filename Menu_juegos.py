@@ -53,9 +53,7 @@ JUEGOS = {
         "hash": "HASH_JUEGO_9", # REEMPLAZAR
         "archivo": "juego_nueve.py", 
     },
-}
-# ------------------------------------
-
+} 
 def ejecutar_juego_desde_commit(juego_info):
     """
     Extrae un archivo Python de un commit específico usando 'git show', 
