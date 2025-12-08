@@ -10,7 +10,7 @@ import sys
 JUEGOS = {
     1: {
         "nombre": "Juego de Bryan (Viborita)",
-        "hash": "43e6050f56b9dc21add019fab99d2b68327c0428",
+        "hash": "b0ea520b8565adf626bb6cab987aa82ba7103748",
         "archivo": "viborita.py", 
     },
     2: {
@@ -30,13 +30,13 @@ JUEGOS = {
     },
     5: {
         "nombre": "Juego de Rafa (Memorama)",
-        "hash": "3dbf38fa6cbdccf053f677a4a6cb393e44d3a133", 
-        "archivo": "MEMORAMA.py", 
+        "hash": "b89bb2686dbea39ee90285262cb73c0da0247baf", 
+        "archivo": "MEMORAMA1.py", 
     },
     6: {
-        "nombre": "Juego Seis",
-        "hash": "HASH_JUEGO_6", 
-        "archivo": "juego_seis.py", 
+        "nombre": "Juego de Zury",
+        "hash": "c88aebbc30f9ecb4721c8b4b314de9a55336fb31", 
+        "archivo": "Sudoku.py", 
     },
     7: {
         "nombre": "Juego Siete",
