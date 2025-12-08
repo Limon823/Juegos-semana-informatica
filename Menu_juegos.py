@@ -15,7 +15,7 @@ JUEGOS = {
     },
     2: {
         "nombre": "Juego de Alex (Ahorcado)",
-        "hash": "e2ddfd875d4d86061045004043811b2439a895f9",
+        "hash": "f2c6c639bd32244e8ce8a9a36f7c633913e48244",
         "archivo": "proyecto SI.py",
     },
     3: {
