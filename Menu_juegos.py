@@ -34,6 +34,16 @@ JUEGOS = {
         "hash": "c88aebbc30f9ecb4721c8b4b314de9a55336fb31", 
         "archivo": "Sudoku.py", 
     },
+    7: {
+        "nombre": "Juego de Vale (Piedra, Papel o Tijeras)",
+        "hash": "6093832d4605fcf21676248deb0404a5ff786cf3",
+        "archivo": "xoxo.py", 
+    },
+    8: {
+        "nombre": "Juego de Limon (Sopa de Letras)",
+        "hash": "eb2eda3708cdfd4367ebef956e6dea9a0574b4ae",
+        "archivo": "sopa.py", 
+    },
 } 
 
 def ejecutar_juego_desde_commit(juego_info):
