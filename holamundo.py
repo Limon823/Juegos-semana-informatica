@@ -11,7 +11,7 @@ class AhorcadoJuego:
         self.palabras = ['PYTHON', 'PROGRAMACION', 'INTERFAZ', 'COMPUTADORA', 'ALGORITMO', 'TECLADO', 'MOUSE', 'GALLITO', 'JAVA', 'CHATGPT']
         
         self.tipos_muerte = ['ahorcado', 'guillotina', 'hoguera', 'ahogado']
-        self.tipo_muerte_actual = "" # Al inicio está vacío
+        self.tipo_muerte_actual = "" 
         
         self.palabra_secreta = ""
         self.letras_adivinadas = []
@@ -37,18 +37,16 @@ class AhorcadoJuego:
         self.letras_adivinadas = []
         self.palabra_secreta = random.choice(self.palabras)
         
-        # --- CAMBIO AQUÍ ---
-        # Creamos una copia de la lista de muertes
+        
         opciones_disponibles = self.tipos_muerte.copy()
         
-        # Si ya jugamos una ronda y hay un tipo de muerte guardado, 
-        # lo quitamos de las opciones para que no se repita inmediatamente.
+        
         if self.tipo_muerte_actual in opciones_disponibles:
             opciones_disponibles.remove(self.tipo_muerte_actual)
         
-        # Elegimos de la lista filtrada
+        
         self.tipo_muerte_actual = random.choice(opciones_disponibles)
-        # -------------------
+        
 
         print(f"Modo de juego: {self.tipo_muerte_actual}") 
         
