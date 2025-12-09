@@ -14,7 +14,7 @@ JUEGOS = {
         "archivo": "viborita.py", 
     },
     2: {
-        "nombre": "Juego de Alex (Ahorcado)",
+        "nombre": "Juego de Alex (Preguntas)",
         "hash": "f2c6c639bd32244e8ce8a9a36f7c633913e48244",
         "archivo": "proyecto SI.py",
     },
@@ -24,7 +24,7 @@ JUEGOS = {
         "archivo": "reloj.py", 
     },
     4: {
-        "nombre": "Juego de Erick",
+        "nombre": "Juego de Erick (Ahorcado)",
         "hash": "752c424a7b7bd503b175b9e741e0aeb82d7e15ea",
         "archivo": "holamundo.py",
     },
@@ -45,12 +45,12 @@ JUEGOS = {
     },
     8: {
         "nombre": "Juego Ocho",
-        "hash": "HASH_JUEGO_8", # REEMPLAZAR
+        "hash": "HASH_JUEGO_8", 
         "archivo": "juego_ocho.py", 
     },
     9: {
         "nombre": "Juego Nueve",
-        "hash": "HASH_JUEGO_9", # REEMPLAZAR
+        "hash": "HASH_JUEGO_9", 
         "archivo": "juego_nueve.py", 
     },
 } 
@@ -61,8 +61,7 @@ def ejecutar_juego_desde_commit(juego_info):
     """
     hash_commit = juego_info["hash"]
     nombre_archivo = juego_info["archivo"]
-    
-    # Directorio temporal para guardar los archivos extraídos
+
     temp_dir = "temp_juegos_git"
     ruta_temporal = os.path.join(temp_dir, nombre_archivo)
     
