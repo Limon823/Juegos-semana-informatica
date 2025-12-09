@@ -30,7 +30,7 @@ JUEGOS = {
         "archivo": "MEMORAMA1.py", 
     },
     6: {
-        "nombre": "Juego de Zury",
+        "nombre": "Juego de Zury(Sudoku)",
         "hash": "c88aebbc30f9ecb4721c8b4b314de9a55336fb31", 
         "archivo": "Sudoku.py", 
     },
@@ -41,29 +41,26 @@ def ejecutar_juego_desde_commit(juego_info):
     nombre_archivo = juego_info["archivo"]
     temp_dir = "temp_juegos_git"
     ruta_temporal = os.path.join(temp_dir, nombre_archivo)
-    try:
-        os.makedirs(temp_dir, exist_ok=True)
-        comando_git = f'git show "{hash_commit}:{nombre_archivo}"'
-        root.iconify() 
-        proceso = subprocess.run(comando_git, shell=True, capture_output=True, text=True, encoding='utf-8', errors='replace', check=True)
-        contenido_py = proceso.stdout
+    
+    os.makedirs(temp_dir, exist_ok=True)
+    comando_git = f'git show "{hash_commit}:{nombre_archivo}"'
+    root.iconify() 
+    proceso = subprocess.run(comando_git, shell=True, capture_output=True, text=True, encoding='utf-8', errors='replace', check=True)
+    contenido_py = proceso.stdout
+    
+    if not contenido_py.strip(): 
+        messagebox.showerror("Error de Archivo", "El archivo está vacío o el hash/ruta es incorrecto.")
+        root.deiconify()
+        return
+
+    with open(ruta_temporal, "w", encoding="utf-8") as f: 
+        f.write(contenido_py)
         
-        if not contenido_py.strip(): raise ValueError("El archivo está vacío o el hash/ruta es incorrecto.")
-            
-        with open(ruta_temporal, "w", encoding="utf-8") as f: f.write(contenido_py)
-            
-        subprocess.run([sys.executable, ruta_temporal])
-        
-    except subprocess.CalledProcessError:
-        messagebox.showerror("Error de Git", "El comando Git falló. Verifica el HASH o la ruta del archivo. ¿Estás en un repositorio Git?")
-    except ValueError as e:
-        messagebox.showerror("Error de Archivo", str(e))
-    except Exception as e:
-        messagebox.showerror("Error", f"Ocurrió un error inesperado: {e}")
-    finally:
-        root.deiconify() 
-        if os.path.exists(ruta_temporal): os.remove(ruta_temporal)
-        if os.path.exists(temp_dir) and not os.listdir(temp_dir): os.rmdir(temp_dir)
+    subprocess.run([sys.executable, ruta_temporal])
+    
+    root.deiconify() 
+    if os.path.exists(ruta_temporal): os.remove(ruta_temporal)
+    if os.path.exists(temp_dir) and not os.listdir(temp_dir): os.rmdir(temp_dir)
 
 root = tk.Tk()
 root.title("Panel de Juegos del Repositorio")
